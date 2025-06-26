@@ -1,0 +1,83 @@
+/* Container principal - Mesmo estilo dos formulários */
+#home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: inherit; /* Fundo cinza igual aos formulários */
+  font-family: 'MS Sans Serif', 'Segoe UI', sans-serif;
+}
+
+/* Caixa de conteúdo - Idêntica à dos formulários */
+.home-content {
+    transform: translateY(-15%);
+  width: 90%;
+  max-width: 500px;
+  background: #E5E5E5;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
+  padding: 24px;
+  text-align: center;
+}
+
+/* Título - Estilo consistente com o dos formulários */
+.home-title {
+  color: #000080; /* Azul do Windows */
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #fff;
+  padding: 4px;
+  background: linear-gradient(to right, #000080, #1084d0);
+  color: #DDDDDD;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #000;
+}
+
+/* Botões - Exatamente iguais aos dos formulários */
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.home-button {
+  min-width: 120px;
+  padding: 8px 16px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
+}
+
+.home-button:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset -1px -1px #dfdfdf,
+    inset 1px 1px #000000,
+    inset -2px -2px #ffffff,
+    inset 2px 2px #808080;
+}
+
+/* Texto - Mesmo estilo dos formulários */
+.home-message {
+  color: #000;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

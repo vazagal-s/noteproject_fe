@@ -1,0 +1,109 @@
+/* Container principal - Estilo bloco de notas com referência Windows 97 */
+.auth-form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #E5E5E5;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
+  font-family: 'MS Sans Serif', 'Segoe UI', sans-serif;
+  position: relative;
+}
+
+/* Título no estilo Windows 97 */
+.auth-form-title {
+  font-size: 1.5rem;
+  color: #000080; /* Azul do Windows */
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #fff;
+  padding: 4px;
+  background: linear-gradient(to right, #000080, #1084d0);
+  color: white;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #000;
+}
+
+/* Mesmo estilo do login - apenas adicionamos classes para novos campos */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #0000aa; /* Azul do Windows */
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  background: #fff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.2;
+  min-height: 1em;
+  padding: 0.3em 0.2em;
+  vertical-align: middle;
+}
+.form-input:focus {
+  outline: 1px dotted #000;
+}
+
+.form-submit {
+  width: 100%;
+  min-width: 20vw;
+  padding: 8px;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
+}
+
+.form-error {
+  color: #c00;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  font-weight: bold;
+}
+.form-submit:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset -1px -1px #dfdfdf,
+    inset 1px 1px #000000,
+    inset -2px -2px #ffffff,
+    inset 2px 2px #808080;
+}
+
+/* Link secundário */
+.form-alt-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #000;
+  font-size: 0.8rem;
+}
+
+.form-alt-link a {
+  color: #000080;
+  text-decoration: underline;
+  font-weight: bold;
+}
