@@ -7,7 +7,7 @@ import "../../resources/auth.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -17,11 +17,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", 
-        { email, password },
+        { username, password },
         { headers: { "Content-Type": "application/json" } }
       );
       
-      console.log("Dados enviados:", { email, password }); // Para debug
+      console.log("Dados enviados:", { username, password }); // Para debug
       console.log("Resposta do login:", response.data);
       
       localStorage.setItem("token", response.data.token);
@@ -39,15 +39,15 @@ const Login = () => {
         {error && <div className="form-error">{error}</div>}
         
         <div className="form-group">
-          <label htmlFor="email" className="form-label">Identificação:</label>
+          <label htmlFor="username" className="form-label">Identificação:</label>
           <input
-            type="email"
-            id="email"
-            name="email"
+            type="username"
+            id="username"
+            name="username"
             className="form-input"
-            placeholder="seu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
