@@ -1,0 +1,90 @@
+/* NotasDashboard.module.css */
+
+.dashboard-container {
+  padding: 0;
+  margin: 0;
+  background-color: #fff8b3;
+  font-family: 'Courier New', monospace;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #c4b200;
+  padding: 10px 20px;
+  color: black;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.logoIcon {
+  width: 35px;
+  height: 35px;
+  background-color: #ffcd4a;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.searchBar {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+  padding: 8px;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+}
+
+.icons {
+  display: flex;
+  gap: 15px;
+  font-size: 1.4em;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  padding: 10px 20px;
+}
+
+.filtroBtn {
+  background-color: #ffee58;
+  border: none;
+  padding: 8px 12px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+
+.filtroBtnAtivo {
+  background-color: #c4b200;
+  color: black;
+}
+
+.notasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.notaCartao {
+  background-color: #f5d300;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+.notaTitulo {
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
