@@ -499,3 +499,11 @@ body {
 .logout-button:hover {
   background-color: #ff6666;
 }
+
+.note-card[data-shared="true"] .note-owner {
+  font-size: 0.8em;
+  color: #666;
+  display: block;
+  margin-top: 4px;
+  font-style: italic;
+}

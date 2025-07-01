@@ -26,7 +26,7 @@ const NotesScreen = () => {
   
   const handleShareNote = async (noteId, username) => {
     try {
-      await api.post(`/notes/${noteId}/share`, { username });
+      await api.post(`/notes/share`, { noteId, username});
       alert('Nota compartilhada com sucesso!');
       loadNotes(noteType); // Recarrega as notas para atualizar o estado
     } catch (err) {
@@ -117,12 +117,22 @@ const NotesScreen = () => {
 
     fetchUserData();
   }, [noteType]);
-
   useEffect(() => {
-    const results = notes.filter(note =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (!notes || notes.length === 0) {
+      setFilteredNotes([]);
+      return;
+    }
+
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    
+    const results = notes.filter(item => {
+      const note = item.note ? item.note : item;
+      const safeTitle = (note.title || '').toLowerCase();
+      const safeContent = (note.content || '').toLowerCase();
+      return safeTitle.includes(lowerSearchTerm) || 
+            safeContent.includes(lowerSearchTerm);
+    });
+    
     setFilteredNotes(results);
   }, [searchTerm, notes]);
 
@@ -137,141 +147,158 @@ const NotesScreen = () => {
 
   // Get initials for user icon (first letter of username or fallback to 'U')
   const userInitial = currentUser?.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
-
-  return (
-    <>
-      {/* Navbar */}
-      <div className="notes-navbar">
-        <div className="notes-nav-title">Notes4Web</div>
-        <div className="notes-nav-controls">
-          {isAdmin && (
-            <Link to="/admin" className="notes-admin-button">
-              Admin
-            </Link>
-          )}
-          <button 
-            onClick={() => setIsCreateModalOpen(true)} 
-            className="notes-new-button"
-          >
-            Nova Nota
-          </button>
-          <div className="user-icon-container">
-            <div className="user-icon" onClick={toggleLogoutDropdown}>
-              {userInitial}
-            </div>
-            {showLogout && (
-              <div className="logout-dropdown">
-                <button className="logout-button" onClick={handleLogout}>
-                  Sair
-                </button>
-              </div>
-            )}
+return (
+  <>
+    {/* Navbar (mantido igual) */}
+    <div className="notes-navbar">
+      <div className="notes-nav-title">Notes4Web</div>
+      <div className="notes-nav-controls">
+        {isAdmin && (
+          <Link to="/admin" className="notes-admin-button">
+            Admin
+          </Link>
+        )}
+        <button 
+          onClick={() => setIsCreateModalOpen(true)} 
+          className="notes-new-button"
+        >
+          Nova Nota
+        </button>
+        <div className="user-icon-container">
+          <div className="user-icon" onClick={toggleLogoutDropdown}>
+            {userInitial}
           </div>
+          {showLogout && (
+            <div className="logout-dropdown">
+              <button className="logout-button" onClick={handleLogout}>
+                Sair
+              </button>
+            </div>
+          )}
         </div>
       </div>
+    </div>
 
-      {/* Modal de Edição */}
-      {editingNote && (
-        <NoteModal
-          note={editingNote}
-          onClose={() => setEditingNote(null)}
-          onSave={handleSaveNote}
-          isShared={noteType === 'compartilhadas'}
-        />
-      )}
-
-      {/* Modal de Criação */}
-      {isCreateModalOpen && (
-        <NoteModal
-          note={{ title: '', content: '' }}
-          onClose={() => setIsCreateModalOpen(false)}
-          onSave={handleCreateNote}
-          isNew={true}
-        />
-      )}
-      
-      {/* Modal de Confirmação */}
-      <ConfirmationModal
-        isOpen={!!noteToDelete}
-        onClose={() => setNoteToDelete(null)}
-        onConfirm={handleDeleteNote}
+    {/* Modais (mantidos iguais) */}
+    {editingNote && (
+      <NoteModal
+        note={editingNote}
+        onClose={() => setEditingNote(null)}
+        onSave={handleSaveNote}
+        isShared={noteType === 'compartilhadas'}
       />
-      
-      {/* Container principal */}
-      <div className="notes-container">
-        <div className="search-container">
-          <input
-            type="text"
-            className="notes-search"
-            placeholder="🔍 Buscar em todas as notas..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <select 
-            className="notes-filter"
-            value={noteType}
-            onChange={(e) => {
-              setNoteType(e.target.value);
-              setFilteredNotes([]);
-            }}
-          >
-            <option value="minhas">Minhas Notas</option>
-            <option value="compartilhadas">Compartilhadas</option>
-          </select>
-        </div>
-        {transitionState === 'loading' ? (
-          <div className="notes-loading">Carregando...</div>
-        ) : (
-          <div className="notes-grid">
-            {filteredNotes.map((note) => (
-              <div key={note.id} className="note-card">
-                <div className="note-card-header">
-                  <h2>{note.title || 'Sem título'}</h2>
-                  <div className="note-actions">
-                    <button 
-                      onClick={() => setEditingNote(note)} 
-                      className="note-edit"
-                    >
-                      Editar
-                    </button>
-                    {noteType === 'minhas' && (
-                      <button 
-                        onClick={() => setNoteToShare(note)} 
-                        className="note-share"
-                      >
-                        Compartilhar
-                      </button>
-                    )}
+    )}
 
-                    {noteToShare && (
-                      <ShareNoteModal
-                        note={noteToShare}
-                        onClose={() => setNoteToShare(null)}
-                        onShare={handleShareNote}
-                      />
+    {isCreateModalOpen && (
+      <NoteModal
+        note={{ title: '', content: '' }}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleCreateNote}
+        isNew={true}
+      />
+    )}
+    
+    <ConfirmationModal
+      isOpen={!!noteToDelete}
+      onClose={() => setNoteToDelete(null)}
+      onConfirm={handleDeleteNote}
+    />
+
+    {/* Modal de Compartilhamento - Movido para fora da lista de notas */}
+    {noteToShare && (
+      <ShareNoteModal
+        note={noteToShare}
+        onClose={() => setNoteToShare(null)}
+        onShare={handleShareNote}
+      />
+    )}
+    
+    {/* Container principal */}
+    <div className="notes-container">
+      <div className="search-container">
+        <input
+          type="text"
+          className="notes-search"
+          placeholder="🔍 Buscar em todas as notas..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select 
+          className="notes-filter"
+          value={noteType}
+          onChange={(e) => {
+            setNoteType(e.target.value);
+            setFilteredNotes([]);
+          }}
+        >
+          <option value="minhas">Minhas Notas</option>
+          <option value="compartilhadas">Compartilhadas</option>
+        </select>
+      </div>
+      {transitionState === 'loading' ? (
+        <div className="notes-loading">Carregando...</div>
+      ) : (<div className="notes-grid">
+            {filteredNotes.map((item) => {
+              // Verifica se é uma nota compartilhada (com estrutura aninhada)
+              const note = item.note ? item.note : item;
+              const ownerUsername = item.ownerUsername;
+
+              return (
+                  <div
+                    key={`note-${note.id}`}
+                    className="note-card"
+                    data-shared={noteType === 'compartilhadas'}
+                  >
+                  <div className="note-card-header">
+                    <h2>{note.title || 'Sem título'}</h2>
+                    
+                    {/* MOSTRA O OWNER APENAS PARA NOTAS COMPARTILHADAS */}
+                    {noteType === 'compartilhadas' && ownerUsername && (
+                      <div className="note-meta">
+                        <span className="note-owner">Compartilhada por: {ownerUsername}</span>
+                      </div>
                     )}
-                    {noteType === 'minhas' && !note.shared && (
+                    
+                    <div className="note-actions">
                       <button 
-                        onClick={() => setNoteToDelete(note)} 
-                        className="note-delete"
+                        onClick={() => setEditingNote(note)} 
+                        className="note-edit"
                       >
-                        Excluir
+                        Editar
                       </button>
-                    )}
+                      {noteType === 'minhas' && (
+                        <button 
+                          onClick={() => setNoteToShare(note)} 
+                          className="note-share"
+                        >
+                          Compartilhar
+                        </button>
+                      )}
+                      {noteType === 'minhas' && !note.shared && (
+                        <button 
+                          onClick={() => setNoteToDelete(note)} 
+                          className="note-delete"
+                        >
+                          Excluir
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="note-content">
+                    {(note.content || '').split('\n').map((paragraph, i) => (
+                      <p key={`note-${note.id}-para-${i}`}>
+                        {paragraph || <br />}
+                      </p>
+                    ))}
                   </div>
                 </div>
-                <div className="note-content">
-                  {note.content.split('\n').map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
-};
+              );
+            })}
+            </div>
+          )}
+    </div>
+  </>
+);
+}
 
 export default NotesScreen;

@@ -3,7 +3,16 @@ import React from 'react';
 const NoteModal = ({ note, onClose, onSave, isShared, isNew = false }) => {
   const [title, setTitle] = React.useState(note.title || '');
   const [content, setContent] = React.useState(note.content || '');
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
 
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
   return (
     <div className="modal-overlay">
       <div className="modal-content">
