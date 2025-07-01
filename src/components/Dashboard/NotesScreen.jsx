@@ -12,7 +12,7 @@ const NotesScreen = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [noteType, setNoteType] = useState('minhas');
-  const [isAdmin, setIsAdmin] = useState(true); // Novo estado para admin
+  const [isAdmin, setIsAdmin] = useState(false); 
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -51,10 +51,23 @@ const NotesScreen = () => {
       <div className="notes-navbar">
         <div className="notes-nav-title">Notes4Web</div>
         <div className="notes-nav-controls">
+          {isAdmin && (
+            <Link to="/admin" className="notes-admin-button">
+              Admin
+            </Link>
+          )}
+          <Link to="/notes/new" className="notes-new-button">
+            Nova Nota
+          </Link>
+        </div>
+      </div>
+      {/* Container principal */}
+      <div className="notes-container">
+        <div className="search-container">
           <input
             type="text"
             className="notes-search"
-            placeholder="Buscar notas..."
+            placeholder="🔍 Buscar em todas as notas..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -65,23 +78,9 @@ const NotesScreen = () => {
             onChange={(e) => setNoteType(e.target.value)}
           >
             <option value="minhas">Minhas Notas</option>
-            <option value="compartilhadas">Compartilhadas</option>
+            <option value="compartilhadas">Notas Compartilhadas</option>
           </select>
-          
-          {/* Botão de Admin - Só aparece se isAdmin for true */}
-          {isAdmin && (
-            <Link to="/admin" className="notes-admin-button">
-              Admin
-            </Link>
-          )}
-          
-          <Link to="/notes/new" className="notes-new-button">
-            Nova Nota
-          </Link>
         </div>
-      </div>
-      {/* Container principal */}
-      <div className="notes-container">
       {loading ? (
         <div className="notes-loading">Carregando...</div>
       ) : error ? (

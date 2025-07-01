@@ -26,25 +26,45 @@ body {
   font-size: 1.2rem;
   text-shadow: 1px 1px 0 #000;
 }
-
+/* Remove a barra de pesquisa da navbar */
 .notes-nav-controls {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-/* Campo de busca */
+/* Novo container para a barra de pesquisa */
+.search-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px
+}
+
+/* Estilo da barra de pesquisa */
 .notes-search {
-  padding: 4px 8px;
+  width: 100%;
+  padding: 8px 12px;
   border: 2px solid;
   border-color: #ffffff #808080 #808080 #ffffff;
   font-family: 'MS Sans Serif', sans-serif;
-  min-width: 200px;
+  font-size: 1rem;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff;
 }
 
 /* Seletor de tipo de nota */
 .notes-filter {
-  padding: 4px;
+  padding: 8px;
+  margin: 0px;
+  font-size: 1rem;
   border: 2px solid;
   border-color: #ffffff #808080 #808080 #ffffff;
   font-family: 'MS Sans Serif', sans-serif;
