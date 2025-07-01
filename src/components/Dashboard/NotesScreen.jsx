@@ -1,27 +1,104 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import '../../resources/style.css';
 import '../../resources/notes_screen.css';
-import React from 'react';
+import ConfirmationModal from './ConfirmationModal';
+import ShareNoteModal from './ShareNoteModal';
+import NoteModal from './NoteModal';
 
 const NotesScreen = () => {
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [noteType, setNoteType] = useState('minhas');
   const [isAdmin, setIsAdmin] = useState(false); 
+  const [editingNote, setEditingNote] = useState(null); 
+  const [noteToDelete, setNoteToDelete] = useState(null);
+  const [transitionState, setTransitionState] = useState('idle');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // Novo estado para controle do modal de criação
+  const [noteToShare, setNoteToShare] = useState(null);
+  
+  const handleShareNote = async (noteId, username) => {
+    try {
+      await api.post(`/notes/${noteId}/share`, { username });
+      alert('Nota compartilhada com sucesso!');
+      loadNotes(noteType); // Recarrega as notas para atualizar o estado
+    } catch (err) {
+      throw err; // O erro será tratado no modal
+    }
+  };
+
+
+  const loadNotes = useCallback(async (type) => {
+    setTransitionState('loading');
+    try {
+      const endpoint = type === 'minhas' ? '/notes' : '/notes/shared';
+      const response = await api.get(endpoint);
+      setNotes(response.data);
+      setFilteredNotes(response.data);
+    } catch (err) {
+      console.error('Erro:', err);
+    } finally {
+      setTransitionState('idle');
+    }
+  }, []);
+
+  useEffect(() => {
+    loadNotes(noteType);
+  }, [noteType, loadNotes]);
+
+  const handleDeleteNote = async () => {
+    try {
+      await api.delete(`/notes/${noteToDelete.id}`);
+      setNotes(notes.filter(n => n.id !== noteToDelete.id));
+      setFilteredNotes(filteredNotes.filter(n => n.id !== noteToDelete.id));
+      setNoteToDelete(null);
+    } catch (err) {
+      console.error('Erro ao excluir nota:', err);
+      alert('Erro ao excluir nota');
+    }
+  };
+
+  const handleSaveNote = async (updatedNote) => {
+    try {
+      const isSharedNote = noteType === 'compartilhadas';
+      const endpoint = isSharedNote 
+        ? `/notes/shared/${updatedNote.id}` 
+        : `/notes/${updatedNote.id}`;
+      
+      await api.put(endpoint, updatedNote);
+      
+      setNotes(notes.map(n => n.id === updatedNote.id ? updatedNote : n));
+      setFilteredNotes(filteredNotes.map(n => n.id === updatedNote.id ? updatedNote : n));
+      setEditingNote(null);
+      
+    } catch (err) {
+      console.error('Erro ao salvar nota:', err);
+      alert('Erro ao salvar nota');
+    }
+  };
+
+  const handleCreateNote = async (newNote) => {
+    try {
+      const response = await api.post('/notes', newNote);
+      setNotes([response.data, ...notes]);
+      setFilteredNotes([response.data, ...filteredNotes]);
+      setIsCreateModalOpen(false);
+    } catch (err) {
+      console.error('Erro ao criar nota:', err);
+      alert('Erro ao criar nota');
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Verifica se o usuário é admin
         const userResponse = await api.get('/auth/me');
         setIsAdmin(userResponse.data.isAdmin || false);
         
-        // Busca as notas
         const endpoint = noteType === 'minhas' ? '/notes' : '/notes/shared';
         const notesResponse = await api.get(endpoint);
         setNotes(notesResponse.data);
@@ -56,11 +133,42 @@ const NotesScreen = () => {
               Admin
             </Link>
           )}
-          <Link to="/notes/new" className="notes-new-button">
+          <button 
+            onClick={() => setIsCreateModalOpen(true)} 
+            className="notes-new-button"
+          >
             Nova Nota
-          </Link>
+          </button>
         </div>
       </div>
+
+      {/* Modal de Edição */}
+      {editingNote && (
+        <NoteModal
+          note={editingNote}
+          onClose={() => setEditingNote(null)}
+          onSave={handleSaveNote}
+          isShared={noteType === 'compartilhadas'}
+        />
+      )}
+
+      {/* Modal de Criação */}
+      {isCreateModalOpen && (
+        <NoteModal
+          note={{ title: '', content: '' }}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSave={handleCreateNote}
+          isNew={true}
+        />
+      )}
+      
+      {/* Modal de Confirmação */}
+      <ConfirmationModal
+        isOpen={!!noteToDelete}
+        onClose={() => setNoteToDelete(null)}
+        onConfirm={handleDeleteNote}
+      />
+      
       {/* Container principal */}
       <div className="notes-container">
         <div className="search-container">
@@ -71,31 +179,57 @@ const NotesScreen = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          
           <select 
             className="notes-filter"
             value={noteType}
-            onChange={(e) => setNoteType(e.target.value)}
+            onChange={(e) => {
+              setNoteType(e.target.value);
+              setFilteredNotes([]);
+            }}
           >
             <option value="minhas">Minhas Notas</option>
-            <option value="compartilhadas">Notas Compartilhadas</option>
+            <option value="compartilhadas">Compartilhadas</option>
           </select>
         </div>
-      {loading ? (
-        <div className="notes-loading">Carregando...</div>
-      ) : error ? (
-        <div className="notes-error">{error}</div>
-      ) : (
-        <div className="notes-grid">
-          {filteredNotes.map((note) => (
-            <div key={note.id} className="note-card">
+        {transitionState === 'loading' ? (
+          <div className="notes-loading">Carregando...</div>
+        ) : (
+          <div className="notes-grid">
+            {filteredNotes.map((note) => (
+              <div key={note.id} className="note-card">
                 <div className="note-card-header">
                   <h2>{note.title || 'Sem título'}</h2>
                   <div className="note-actions">
-                    <Link to={`/notes/edit/${note.id}`} className="note-edit">
+                    <button 
+                      onClick={() => setEditingNote(note)} 
+                      className="note-edit"
+                    >
                       Editar
-                    </Link>
-                    <button className="note-delete">Excluir</button>
+                    </button>
+                    {noteType === 'minhas' && (
+                      <button 
+                        onClick={() => setNoteToShare(note)} 
+                        className="note-share"
+                      >
+                        Compartilhar
+                      </button>
+                    )}
+
+                    {noteToShare && (
+                      <ShareNoteModal
+                        note={noteToShare}
+                        onClose={() => setNoteToShare(null)}
+                        onShare={handleShareNote}
+                      />
+                    )}
+                    {noteType === 'minhas' && !note.shared && (
+                      <button 
+                        onClick={() => setNoteToDelete(note)} 
+                        className="note-delete"
+                      >
+                        Excluir
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="note-content">
