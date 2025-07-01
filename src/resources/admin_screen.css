@@ -9,17 +9,25 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Title Styling */
 .notes-nav-title {
   font-size: 24px;
   font-weight: bold;
+  flex-grow: 1; /* força o título a usar o espaço restante */
+  min-width: 0; /* impede overflow horizontal */
+  margin-right: 20px;
 }
 
+/* Navigation Controls */
 .notes-nav-controls {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
+  flex-shrink: 0;
+    margin-right: 50px;
 }
 
+/* Search Input */
 .notes-search {
   padding: 8px 12px;
   border: none;
@@ -28,6 +36,7 @@
   width: 200px;
 }
 
+/* Back to Notes Button */
 .notes-new-button {
   padding: 8px 16px;
   background-color: #3498db;
@@ -42,11 +51,60 @@
   background-color: #2980b9;
 }
 
+/* User Icon Container */
+.user-icon-container {
+  position: relative; /* For positioning dropdown */
+}
+
+/* User Icon */
+.user-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Logout Dropdown */
+.logout-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+/* Logout Button */
+.logout-button {
+  padding: 8px 16px;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #a93226;
+}
+
 /* Admin Screen Container */
 .notes-container {
   padding: 20px;
   max-width: 1200px;
-  margin: 200px auto 0; /* 60px top margin */
+  margin: 200px auto 0; /* Kept 200px top margin from provided CSS */
 }
 
 /* Table Styling */
