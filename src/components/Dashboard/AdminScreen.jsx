@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import '../../resources/admin_screen.css';
 import React from 'react';
@@ -10,6 +10,9 @@ const AdminScreen = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,7 +27,17 @@ const AdminScreen = () => {
       }
     };
 
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await api.get('/auth/me');
+        setCurrentUser(response.data);
+      } catch (err) {
+        console.error('Erro ao carregar usuário logado:', err.response?.data || err.message);
+      }
+    };
+
     fetchUsers();
+    fetchCurrentUser();
   }, []);
 
   const handleToggleActive = async (userId, currentStatus) => {
@@ -69,10 +82,22 @@ const AdminScreen = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const toggleLogoutDropdown = () => {
+    setShowLogout(!showLogout);
+  };
+
   const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Get initials for user icon (first letter of username or fallback to 'U')
+  const userInitial = currentUser?.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
 
   return (
     <>
@@ -90,6 +115,18 @@ const AdminScreen = () => {
           <Link to="/notes" className="notes-new-button">
             Voltar para Notas
           </Link>
+          <div className="user-icon-container">
+            <div className="user-icon" onClick={toggleLogoutDropdown}>
+              {userInitial}
+            </div>
+            {showLogout && (
+              <div className="logout-dropdown">
+                <button className="logout-button" onClick={handleLogout}>
+                  Sair
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

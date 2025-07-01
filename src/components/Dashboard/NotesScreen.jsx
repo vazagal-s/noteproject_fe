@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import '../../resources/style.css';
 import '../../resources/notes_screen.css';
@@ -15,6 +15,9 @@ const NotesScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [noteType, setNoteType] = useState('minhas');
   const [isAdmin, setIsAdmin] = useState(false); 
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
   const [editingNote, setEditingNote] = useState(null); 
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [transitionState, setTransitionState] = useState('idle');
@@ -98,6 +101,7 @@ const NotesScreen = () => {
       try {
         const userResponse = await api.get('/auth/me');
         setIsAdmin(userResponse.data.isAdmin || false);
+        setCurrentUser(userResponse.data);
         
         const endpoint = noteType === 'minhas' ? '/notes' : '/notes/shared';
         const notesResponse = await api.get(endpoint);
@@ -122,6 +126,18 @@ const NotesScreen = () => {
     setFilteredNotes(results);
   }, [searchTerm, notes]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const toggleLogoutDropdown = () => {
+    setShowLogout(!showLogout);
+  };
+
+  // Get initials for user icon (first letter of username or fallback to 'U')
+  const userInitial = currentUser?.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
+
   return (
     <>
       {/* Navbar */}
@@ -139,6 +155,18 @@ const NotesScreen = () => {
           >
             Nova Nota
           </button>
+          <div className="user-icon-container">
+            <div className="user-icon" onClick={toggleLogoutDropdown}>
+              {userInitial}
+            </div>
+            {showLogout && (
+              <div className="logout-dropdown">
+                <button className="logout-button" onClick={handleLogout}>
+                  Sair
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

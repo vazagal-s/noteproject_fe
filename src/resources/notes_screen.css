@@ -26,7 +26,8 @@ body {
   font-size: 1.2rem;
   text-shadow: 1px 1px 0 #000;
 }
-/* Remove a barra de pesquisa da navbar */
+
+/* Navigation Controls */
 .notes-nav-controls {
   display: flex;
   gap: 16px;
@@ -444,4 +445,57 @@ body {
   color: #e74c3c;
   margin-top: 5px;
   font-size: 0.9em;
+}
+/* User Icon Container */
+.user-icon-container {
+  position: relative; /* For positioning dropdown */
+}
+
+/* User Icon */
+.user-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #ffffff; /* White background to contrast with navbar gradient */
+  color: #000080; /* Matches navbar start color */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #808080; /* Simplified to a single color border */
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf; /* Simplified shadow to avoid duplication */
+}
+
+/* Logout Dropdown */
+.logout-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+/* Logout Button */
+.logout-button {
+  padding: 8px 16px;
+  background-color: #ff4444; /* Matches note-delete style */
+  color: white;
+  border: 2px solid;
+  border-color: #ffffff #c00 #c00 #ffffff; /* Matches note-delete style */
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #ff6666;
 }
