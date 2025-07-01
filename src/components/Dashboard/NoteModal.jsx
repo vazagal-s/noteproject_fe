@@ -34,6 +34,7 @@ const NoteModal = ({ note, onClose, onSave, isShared, isNew = false }) => {
               className="form-input"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              maxLength={25}
             />
           </div>
           

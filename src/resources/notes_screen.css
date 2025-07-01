@@ -131,20 +131,15 @@ body {
 
 /* Notas individuais */
 .note-card {
-  background: #fafa76;
-  border: 2px solid #eeee88;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 16px;
-  min-height: 200px;
+  background-color: #fafa76;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 240px; /* ou mais se quiser aumentar a altura mínima */
   position: relative;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
-  clip-path: polygon(
-    0 0, 
-    100% 0, 
-    100% calc(100% - 24px), 
-    calc(100% - 24px) 100%, 
-    0 100%
-  );
-  
 }
 
 .note-card-header {
@@ -164,7 +159,9 @@ body {
 
 .note-actions {
   display: flex;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 6px;
+  margin-top: auto
 }
 
 .note-edit, .note-delete {
@@ -207,7 +204,6 @@ body {
   height: 24px;
   background: linear-gradient(315deg, transparent 50%, #ddddaa 50%);
 }
-
 
 /* Botão de Admin */
 .notes-admin-button {
@@ -427,17 +423,32 @@ body {
 
 /* Estilo para o botão de compartilhar */
 .note-share {
-  background-color: #4a89dc;
+  padding: 4px 8px;
+  background: #1084d0; /* Blue to match navbar end color */
   color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
+  border-color: #ffffff #808080 #808080 #ffffff; /* Matches edit/delete border */
+  font-size: 0.8rem;
   cursor: pointer;
   margin-left: 5px;
+  box-shadow:
+    inset -1px -1px #000000,
+    inset 1px 1px #dfdfdf,
+    inset -2px -2px #808080,
+    inset 2px 2px #ffffff; /* Matches edit/delete shadow */
+    border-radius: 0%; /* Ensure square/rectangular shape */
 }
 
 .note-share:hover {
-  background-color: #3a70c2;
+  background: #0f73b7; /* Darker shade for hover */
+}
+
+.note-share:active {
+  border-color: #808080 #ffffff #ffffff #808080; /* Swapped border on active */
+  box-shadow:
+    inset -1px -1px #dfdfdf,
+    inset 1px 1px #000000,
+    inset -2px -2px #ffffff,
+    inset 2px 2px #808080; /* Swapped shadow on active */
 }
 
 /* Estilo para mensagens de erro no modal */

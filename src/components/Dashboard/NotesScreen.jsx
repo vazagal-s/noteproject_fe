@@ -258,8 +258,15 @@ return (
                         <span className="note-owner">Compartilhada por: {ownerUsername}</span>
                       </div>
                     )}
-                    
-                    <div className="note-actions">
+                  </div>
+                  <div className="note-content">
+                    {(note.content || '').split('\n').map((paragraph, i) => (
+                      <p key={`note-${note.id}-para-${i}`}>
+                        {paragraph || <br />}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="note-actions">
                       <button 
                         onClick={() => setEditingNote(note)} 
                         className="note-edit"
@@ -283,14 +290,6 @@ return (
                         </button>
                       )}
                     </div>
-                  </div>
-                  <div className="note-content">
-                    {(note.content || '').split('\n').map((paragraph, i) => (
-                      <p key={`note-${note.id}-para-${i}`}>
-                        {paragraph || <br />}
-                      </p>
-                    ))}
-                  </div>
                 </div>
               );
             })}
