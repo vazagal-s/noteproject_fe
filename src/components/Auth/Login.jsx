@@ -25,7 +25,7 @@ const Login = () => {
       console.log("Resposta do login:", response.data);
       
       localStorage.setItem("token", response.data.token);
-      navigate("/notasdashboard");
+      navigate("/notes");
     } catch (err) {
       setError("Credenciais inválidas ou servidor offline");
       console.error("Erro no login:", err.response?.data || err.message);

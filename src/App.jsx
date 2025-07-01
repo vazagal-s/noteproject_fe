@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Dashboard from "./components/Dashboard/Dashboard";
-import PrivateRoute from "./components/PrivateRoute"; // Importa o componente de rota privada
-import Home from "./components/Home"; // Importa o componente Home
-import NotesDashboard from './components/Dashboard/NotesDashboard';
+import PrivateRoute from "./components/PrivateRoute";
+import Home from "./components/Home";
 import NotesScreen from './components/Dashboard/NotesScreen';
+import AdminScreen from './components/Dashboard/AdminScreen';
 
 function App() {
   return (
@@ -24,13 +24,10 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
-        {/* Rotas Protegidas */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/notasdashboard" element={<NotesDashboard />} />
-        </Route>
-        
         <Route path="/notes" element={<NotesScreen />} />
-        {/* Rota de fallback (opcional: página 404) */}
+
+        <Route path="/admin" element={<AdminScreen />} />
+
         <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
       </Routes>
     </BrowserRouter>
