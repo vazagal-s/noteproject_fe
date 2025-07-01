@@ -35,7 +35,7 @@ const ConfirmationModal = ({
             className="form-submit-aux" 
             style={{ 
               background: '#cc0000',
-              flexShrink: 0 /* Impede que o botão diminua */
+              flexShrink: 0 // Impede que o botão diminua
             }}
           >
             Confirmar

@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../resources/style.css";
-import "../resources/home.css"; // Importa o CSS específico para a página inicial
+import "../resources/home.css";
 
 const Home = () => {
   return (

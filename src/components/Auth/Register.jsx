@@ -13,7 +13,7 @@ const Register = () => {
     birth_date: ''
   });
   const [error, setError] = useState('');
-  const [localBirthDate, setLocalBirthDate] = useState(''); // Estado para o formato brasileiro
+  const [localBirthDate, setLocalBirthDate] = useState('');
   const navigate = useNavigate();
 
   // Converte dd/mm/aaaa para aaaa-mm-dd (formato ISO)

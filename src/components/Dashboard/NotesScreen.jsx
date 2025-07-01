@@ -21,16 +21,16 @@ const NotesScreen = () => {
   const [editingNote, setEditingNote] = useState(null); 
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [transitionState, setTransitionState] = useState('idle');
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // Novo estado para controle do modal de criação
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [noteToShare, setNoteToShare] = useState(null);
   
   const handleShareNote = async (noteId, username) => {
     try {
       await api.post(`/notes/share`, { noteId, username});
       alert('Nota compartilhada com sucesso!');
-      loadNotes(noteType); // Recarrega as notas para atualizar o estado
+      loadNotes(noteType);
     } catch (err) {
-      throw err; // O erro será tratado no modal
+      throw err;
     }
   };
 

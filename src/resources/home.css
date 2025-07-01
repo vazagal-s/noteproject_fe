@@ -1,15 +1,13 @@
-/* Container principal - Mesmo estilo dos formulários */
 #home {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: inherit; /* Fundo cinza igual aos formulários */
+  background: inherit;
   font-family: 'MS Sans Serif', 'Segoe UI', sans-serif;
 }
 
-/* Caixa de conteúdo - Idêntica à dos formulários */
 .home-content {
     transform: translateY(-15%);
   width: 90%;
@@ -26,9 +24,8 @@
   text-align: center;
 }
 
-/* Título - Estilo consistente com o dos formulários */
 .home-title {
-  color: #000080; /* Azul do Windows */
+  color: #000080;
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
   font-weight: bold;
@@ -40,7 +37,6 @@
   border-bottom: 1px solid #000;
 }
 
-/* Botões - Exatamente iguais aos dos formulários */
 .home-buttons {
   display: flex;
   justify-content: center;
@@ -75,7 +71,6 @@
     inset 2px 2px #808080;
 }
 
-/* Texto - Mesmo estilo dos formulários */
 .home-message {
   color: #000;
   font-size: 0.9rem;

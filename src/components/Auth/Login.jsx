@@ -21,7 +21,7 @@ const Login = () => {
         { headers: { "Content-Type": "application/json" } }
       );
       
-      console.log("Dados enviados:", { username, password }); // Para debug
+      console.log("Dados enviados:", { username, password });
       console.log("Resposta do login:", response.data);
       
       localStorage.setItem("token", response.data.token);

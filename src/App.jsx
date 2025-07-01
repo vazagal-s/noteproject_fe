@@ -12,7 +12,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rota Pública (Home) */}
         <Route path="/" element={<Home />} />
         
         {/* Rotas de Autenticação */}

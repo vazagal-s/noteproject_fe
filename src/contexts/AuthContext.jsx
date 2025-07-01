@@ -1,4 +1,3 @@
-// Crie um AuthContext (contexts/AuthContext.jsx)
 import { createContext, useEffect, useState } from "react";
 import React from "react";
 

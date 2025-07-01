@@ -101,7 +101,6 @@ const AdminScreen = () => {
 
   return (
     <>
-      {/* Navbar */}
       <div className="notes-navbar">
         <div className="notes-nav-title">Admin - Gerenciamento de Usuários</div>
         <div className="notes-nav-controls">
