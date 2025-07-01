@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://api.notes4web.vzgtech.com.br/api",
+  baseURL: "https://api.notes4web.vzgtech.com.br/api",
 });
 
 api.interceptors.request.use((config) => {
